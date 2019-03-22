@@ -1,6 +1,6 @@
 # classifier-demo
 
-> Playground with machine learning methods using python sklearn. This example project provides basic examples to evaluate and test classifiers with a popular dataset
+> Playground with machine learning methods using python sklearn. This example project provides basic examples to evaluate and test classifiers with a popular dataset.
 
 
 ## Install
