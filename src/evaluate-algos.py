@@ -13,7 +13,7 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.naive_bayes import GaussianNB
 from sklearn.svm import SVC
-from sklearn.ensemble import AdaBoostClassifier
+from sklearn.ensemble import RandomForestClassifier, AdaBoostClassifier
 from sklearn.neural_network import MLPClassifier
 
 # Load the dataset
@@ -40,7 +40,8 @@ models.append(('CART', DecisionTreeClassifier()))
 models.append(('NB', GaussianNB()))
 models.append(('SVM', SVC(gamma='auto')))
 models.append(('ADA', AdaBoostClassifier()))
-models.append(('MLP', MLPClassifier(alpha=1, max_iter=500)))
+models.append(('MLP', MLPClassifier(alpha=1, max_iter=800)))
+models.append(('RF', RandomForestClassifier(max_depth=5, n_estimators=10, max_features=1)))
 results = []
 names = []
 for name, model in models:
@@ -123,12 +124,22 @@ print(accuracy_score(Y_validation, predictions))
 print(confusion_matrix(Y_validation, predictions))
 print(classification_report(Y_validation, predictions))
 
-# Use the Multilayer Perceptron algorithm
-mlp = MLPClassifier(alpha=1, max_iter=500)
+# Use the Multilayer Perceptron algorith
+mlp = MLPClassifier(alpha=1, max_iter=800)
 mlp.fit(X_train, Y_train)
 predictions = mlp.predict(X_validation)
 print('')
 print('Multi-layer Perceptron algorithm predictions:')
+print(accuracy_score(Y_validation, predictions))
+print(confusion_matrix(Y_validation, predictions))
+print(classification_report(Y_validation, predictions))
+
+# Use the Random Forests algorithm
+rf = RandomForestClassifier(max_depth=5, n_estimators=10, max_features=1)
+rf.fit(X_train, Y_train)
+predictions = rf.predict(X_validation)
+print('')
+print('Random Forests algorithm predictions:')
 print(accuracy_score(Y_validation, predictions))
 print(confusion_matrix(Y_validation, predictions))
 print(classification_report(Y_validation, predictions))
