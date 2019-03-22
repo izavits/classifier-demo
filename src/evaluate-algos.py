@@ -13,6 +13,8 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
 from sklearn.naive_bayes import GaussianNB
 from sklearn.svm import SVC
+from sklearn.ensemble import AdaBoostClassifier
+from sklearn.neural_network import MLPClassifier
 
 # Load the dataset
 # Load dataset
@@ -29,8 +31,7 @@ seed = 7
 X_train, X_validation, Y_train, Y_validation = model_selection.train_test_split(X, Y, test_size=validation_size, random_state=seed)
 scoring = 'accuracy'
 
-# Build and evaluate models
-# Spot Check Algorithms
+# Build and evaluate models using 10-fold cross validation
 models = []
 models.append(('LR', LogisticRegression(solver='liblinear', multi_class='ovr')))
 models.append(('LDA', LinearDiscriminantAnalysis()))
@@ -38,7 +39,8 @@ models.append(('KNN', KNeighborsClassifier()))
 models.append(('CART', DecisionTreeClassifier()))
 models.append(('NB', GaussianNB()))
 models.append(('SVM', SVC(gamma='auto')))
-# evaluate each model in turn
+models.append(('ADA', AdaBoostClassifier()))
+models.append(('MLP', MLPClassifier(alpha=1, max_iter=500)))
 results = []
 names = []
 for name, model in models:
@@ -49,15 +51,8 @@ for name, model in models:
 	msg = "%s: %f (%f)" % (name, cv_results.mean(), cv_results.std())
 	print(msg)
 
-# Compare Algorithms Vizualy
-#fig = plt.figure()
-#fig.suptitle('Algorithm Comparison')
-#ax = fig.add_subplot(111)
-#plt.boxplot(results)
-#ax.set_xticklabels(names)
-#plt.show()
-
 # Make predictions on validation dataset
+
 # Use the KNN algorithm
 knn = KNeighborsClassifier()
 knn.fit(X_train, Y_train)
@@ -114,6 +109,26 @@ svm.fit(X_train, Y_train)
 predictions = svm.predict(X_validation)
 print('')
 print('SVM algorithm predictions:')
+print(accuracy_score(Y_validation, predictions))
+print(confusion_matrix(Y_validation, predictions))
+print(classification_report(Y_validation, predictions))
+
+# Use the AdaBoost algorithm
+ada = AdaBoostClassifier()
+ada.fit(X_train, Y_train)
+predictions = ada.predict(X_validation)
+print('')
+print('AdaBoost algorithm predictions:')
+print(accuracy_score(Y_validation, predictions))
+print(confusion_matrix(Y_validation, predictions))
+print(classification_report(Y_validation, predictions))
+
+# Use the Multilayer Perceptron algorithm
+mlp = MLPClassifier(alpha=1, max_iter=500)
+mlp.fit(X_train, Y_train)
+predictions = mlp.predict(X_validation)
+print('')
+print('Multi-layer Perceptron algorithm predictions:')
 print(accuracy_score(Y_validation, predictions))
 print(confusion_matrix(Y_validation, predictions))
 print(classification_report(Y_validation, predictions))
