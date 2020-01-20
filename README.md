@@ -49,6 +49,8 @@ Train some algorithms and evaluate them:
 pythonw evaluate-algos.py
 ```
 
+Browse the `src` folder for more examples.
+
 ## Support
 If you're having any problem, please raise an issue on GitHub.
 
